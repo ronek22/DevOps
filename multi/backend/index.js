@@ -9,7 +9,8 @@ app.use(bodyParser.json());
 const redis = require("redis");
 const redisClient = redis.createClient({
     host: keys.redisHost,
-    port: keys.redisPort
+    port: keys.redisPort,
+    retry_strategy: () => 1000
 });
 
 // tworzenie polaczen jest operacja kosztowna
@@ -38,6 +39,10 @@ const gcd = function(a, b) {
 const insert_number = function(number) {
 
 }
+
+app.get("/", (req, resp) => {
+    resp.send("Hello world from backend!!")
+})
 
 app.get("/gcd/:a/:b", (req, resp) => {
     const a = req.params.a;
@@ -74,7 +79,7 @@ app.get("/gcd/", (req, resp) => {
     });
 });
 
-app.listen(8080, err => {
-    console.log("Server listening on port 8080");
+app.listen(4000, err => {
+    console.log("Server listening on port 4000");
 });
 
