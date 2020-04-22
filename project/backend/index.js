@@ -39,6 +39,11 @@ const calc_pace = function(distance, duration) {
     pace = duration_to_number(duration) / distance;
     minutes = pace | 0;
     seconds = ((pace - minutes) * 60) | 0;
+
+    if (seconds < 10){
+        seconds = `0${seconds}`;
+    }
+
     return `${minutes}:${seconds}`;
 }
 
@@ -48,15 +53,15 @@ app.get("/:distance/:duration", (req, resp) => {
     const duration = req.params.duration.split(':').map(x=>+x);
     
     if (duration.length !== 3){
-        return resp.send({result: "Czas musi być w formie H:M:S"});
+        return resp.send({error: "Czas musi być w formie H:M:S"});
     }
 
     if (distance === 0) {
-        return resp.send({result: "Dystans musi być większy do 0"});
+        return resp.send({error: "Dystans musi być większy do 0"});
     }    
 
     if (isNaN(distance)) {
-        return resp.send({result: "Dystans musi być liczbą!"});
+        return resp.send({error: "Dystans musi być liczbą!"});
     }
 
     redisClient.get(key, (err, pace) => {

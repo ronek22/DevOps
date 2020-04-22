@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
 import axios from "axios";
-import { TextField, Container, Box, Typography, Button, FormGroup } from "@material-ui/core";
+import { TextField, Container, Box, Typography, Button, FormGroup, Card } from "@material-ui/core";
 
 function App() {
+
+  const [duration, setDuration] = useState('');
+  const [distance, setDistance] = useState('');
+  const [pace, setPace] = useState('');
+  const [error, setError] = useState('');
+
 
   const handleClick = async (event) => {
     event.preventDefault();
     axios.get(`/api/${distance}/${duration}/`).then(res => {
-      alert(`Tempo biegu -> ${res.data.result}`)
+      if (res.data.error) {
+        setPace('');
+        setError(res.data.error);
+      } else {
+        setError('');
+        setPace(res.data.result);
+      }
     })
   };
 
-  const [duration, setDuration] = useState('');
-  const [distance, setDistance] = useState('');
 
   return (
     <Container maxWidth="sm">
@@ -24,7 +34,7 @@ function App() {
           <FormGroup>
             <TextField
               label="Czas trwania"
-              placeholder="H:M:S"
+              placeholder="HH:MM:SS"
               value={duration}
               onInput={e => setDuration(e.target.value)}
               variant="outlined"
@@ -58,9 +68,22 @@ function App() {
         </form>
       </Box>
 
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Box m={2}>
+        <Card elevation={2}>
+          <Box p={2}>
+            {error ?
+              <Typography color='error' variant="h5" component="p" align="center" gutterBottom>
+                {error}
+      </Typography> :
+              <Typography color='primary' variant="h5" component="p" align="center" gutterBottom>
+                {pace ? `${pace} min/km` : 'Czekam na działanie..'}
+              </Typography>
+            }
 
-      </Typography>
+          </Box>
+
+        </Card>
+      </Box>
 
 
     </Container>
