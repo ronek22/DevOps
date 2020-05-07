@@ -18,23 +18,12 @@ spec:
         spec:
             containers:
                 - name: my-backend-container
-                  image: ronek22/running-calculator-backend
+                  image: ronek22/mybackend
                   env:
                     - name: REDIS_HOST
-                      value: 'myredisservice'
+                      value: myredisservice
                     - name: REDIS_PORT
                       value: '6379'
-                    - name: PGUSER
-                      value: 'postgres'
-                    - name: PGHOST
-                      value: 'mypostgresservice'
-                    - name: PGDATABASE
-                      value: postgres
-                    - name: PGPASSWORD
-                      value: '214nfhkq123'
-                    - name: PGPORT
-                      value: '5432'
-
 
 
     replicas: 3

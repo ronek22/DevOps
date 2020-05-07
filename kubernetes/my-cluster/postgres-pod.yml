@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-pod
+  labels:
+    app: mypostgres
+    type: database
+spec:
+  containers:
+    - name: my-postgres-container
+      image: postgres
+      env:
+        - name: POSTGRES_PASSWORD
+          value: '214nfhkq123'
