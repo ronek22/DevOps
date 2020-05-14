@@ -47,6 +47,8 @@ const calc_pace = function(distance, duration) {
     return `${minutes}:${seconds}`;
 }
 
+console.log(keys);
+
 app.get("/:distance/:duration", (req, resp) => {
     const key = `${req.params.distance}&${req.params.duration}`;
     const distance = +req.params.distance;
@@ -84,6 +86,7 @@ app.get("/results/", (req, resp) => {
             resp.send(res.rows);
         }
     });
+    resp.send('Error cannot connect to PostgresDB')
 });
 
 
