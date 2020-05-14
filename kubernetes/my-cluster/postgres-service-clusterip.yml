@@ -11,5 +11,4 @@ spec:
           port: 5432
 
     selector:
-        app: mypostgres
-        type: database
+        type: db
