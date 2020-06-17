@@ -16,6 +16,9 @@ services:
             context: ./nginx
         ports: 
             - '8080:80'
+        depends_on: 
+            - frontend
+            - backend
 
     backend:
         build: 
@@ -32,6 +35,9 @@ services:
             - PGDATABASE=${PGDATABASE}
             - PGPASSWORD=${PGPASSWORD}
             - PGPORT=${PGPORT}
+        depends_on: 
+            - my-postgres-server
+            - my-redis-server
 
     frontend:
         build: 

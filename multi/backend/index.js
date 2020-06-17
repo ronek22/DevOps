@@ -25,9 +25,16 @@ const pgClient = new Pool({
 
 pgClient.on('error', () => console.log('No connection to PG DB'));
 
+
+
 pgClient.query('CREATE TABLE IF NOT EXISTS results(number INT)').catch(err => console.log(err));
 
 console.log(keys);
+console.log("ELOLOLOLO");
+pgClient.query('SELECT NOW()', (err,res) => {
+    console.log(`Query now() result => ${res}, error => ${error}`);
+    pgClient.end();
+})
 
 const gcd = function(a, b) {
     if (b == 0) {

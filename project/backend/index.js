@@ -23,9 +23,14 @@ const pgClient = new Pool({
     port: keys.pgPort
 })
 
-pgClient.on('error', () => console.log('No connection to PG DB'));
+pgClient.on('error', () => {console.log('No connection to PG DB')});
 
-pgClient.query('CREATE TABLE IF NOT EXISTS results(number CHAR(5))').catch(err => console.log(err));
+pgClient.query('CREATE TABLE IF NOT EXISTS results(number CHAR(5))')
+.then(() => {
+    console.log("Table created successfully!");
+}).catch(
+    err => console(`Error during creating table ${err}`)
+);
 
 const duration_to_number = function(duration) {
     hours = duration[0] * 60;
@@ -53,6 +58,8 @@ app.get("/:distance/:duration", (req, resp) => {
     const key = `${req.params.distance}&${req.params.duration}`;
     const distance = +req.params.distance;
     const duration = req.params.duration.split(':').map(x=>+x);
+
+    console.log(`Distance: ${distance}\tDuration: ${duration}`)
     
     if (duration.length !== 3){
         return resp.send({error: "Czas musi być w formie H:M:S"});
@@ -71,13 +78,14 @@ app.get("/:distance/:duration", (req, resp) => {
             pace = calc_pace(distance, duration);
             redisClient.set(key, pace);
         }
-        pgClient.query('INSERT INTO results(number) VALUES ($1)', [pace]).catch(err => console.log(err));
+        pgClient.query('INSERT INTO results(number) VALUES ($1)', [pace]).catch(err => {console.log(err)});
         resp.send({result: pace})
     });
 
 });
 
 app.get("/results/", (req, resp) => {
+    console.log("Access results page");
     pgClient.query("SELECT * FROM results", (err,res) => {
         if (err) {
             console.log(err.stack, res);
@@ -86,7 +94,7 @@ app.get("/results/", (req, resp) => {
             resp.send(res.rows);
         }
     });
-    resp.send('Error cannot connect to PostgresDB')
+    // resp.send('Error cannot connect to PostgresDB')
 });
 
 
