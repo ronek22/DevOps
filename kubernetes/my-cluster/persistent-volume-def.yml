@@ -13,14 +13,15 @@ spec:
   volumeMode: Filesystem
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
-  hostPath:
-    path: C:\dockerTest\
-    type: DirectoryOrCreate
+
+  local:
+    path: /C/dockerVolumes
+  
   nodeAffinity:
     required:
       nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.io/hostname
-            operator: In
-            values:
-              - docker-desktop
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+            - docker-desktop

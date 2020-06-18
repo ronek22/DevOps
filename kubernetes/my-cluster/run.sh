@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# PV
+kubectl create -f local-storageclass.yml
+kubectl create -f persistent-volume-def.yml
+
 # CONFIG MAPS & SECRET
 kubectl create -f myapp-secret.yml
 kubectl create -f postgres-configMap.yml

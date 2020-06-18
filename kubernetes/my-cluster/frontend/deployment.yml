@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: myfrontend-deployment
+  labels:
+    app: myapp-frontend
+    type: frontend
+
+spec:
+  template:
+    metadata:
+      name: myfrontend-pod
+      labels:
+        app: myapp-frontend
+        type: frontend
+    
+    spec:
+      containers:
+        - name: myfrontend-container
+          image: ronek22/running-calculator-frontend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+  replicas: 3
+  selector:
+    matchLabels:
+      type: frontend
